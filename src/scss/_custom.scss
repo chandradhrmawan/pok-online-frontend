@@ -1,0 +1,52 @@
+// Here you can add other styles
+.form-control:focus {
+    color: #768192;
+    background-color: #fff;
+    border-color: #2684FF;
+    outline: 0;
+    box-shadow: none;
+    border-width: 2px;
+}
+
+.form-control-react-select {
+    flex: 1;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.btn:focus, .btn.focus,
+.btn-ghost-danger:focus, .btn-ghost-danger.focus {
+    box-shadow: none;
+}
+
+.grid-row-bold {
+    font-weight: bold;
+}
+
+.dialog-fill {
+    padding: 0 16px;
+}
+
+.dialog-fill .modal-dialog  {
+    max-width: 100%;
+}
+
+.grid-compact .ag-cell {
+    font-size: 8pt;
+    padding: 0 4px !important;
+}
+
+.grid-compact .ag-cell pre {
+    font-size: 8pt;
+}
+
+body {
+    overflow-y: scroll;
+}
+
+.card-header:first-child {
+    font-size: 12pt;
+    font-weight: bold;
+}
