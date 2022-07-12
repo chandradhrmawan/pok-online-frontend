@@ -185,6 +185,10 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
         setUsers(modified);
     };
 
+    const handleChangeSelect = (val) => {
+        setReviewer(val)
+    }
+
     const handleTabChanged = (tabName) => {
         switch (tabName) {
             case "HISTORY" : get(`/api/pok/history?revisionId=${uid}`).then(response => setHistories(response.data)); break;
@@ -453,7 +457,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                 {revision.id && revision.status === 'New' &&
                     <CFormGroup>
                         <CLabel>Reviewer :</CLabel>
-                        <InputSelect options={reviewers} value={reviewer} />
+                        <InputSelect options={reviewers} value={reviewer} onSelect={handleChangeSelect}/>
                     </CFormGroup>
                 }
                 {
