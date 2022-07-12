@@ -731,7 +731,7 @@ const PokDetails = ({ match }) => {
                         rowData={tableData}
                         rowClassRules={rowClassRules}
                     >
-                        <AgGridColumn field="NOMOR" headerName="Nomor" cellRendererFramework={PreCell} width={100}></AgGridColumn>
+                        <AgGridColumn field="NOMOR" headerName="No" cellRendererFramework={PreCell} width={100}></AgGridColumn>
                         <AgGridColumn field="NAMA_RINCIAN_OUTPUT" headerName="Nama Rincian Output" cellRendererFramework={PreCell} width={500}></AgGridColumn>
 
                         <AgGridColumn headerName={filter.periode === "0" ? "Data SAPSK" : "Data Awal"}>
@@ -795,7 +795,7 @@ const PokDetails = ({ match }) => {
                         rowData={tableData2}
                         rowClassRules={rowClassRules}
                     >
-                        <AgGridColumn field="NOMOR" headerName="Nomor" width={100}></AgGridColumn>
+                        <AgGridColumn field="NOMOR" headerName="No" width={100}></AgGridColumn>
                         <AgGridColumn field="NAMA_RINCIAN_OUTPUT" headerName="Total Penanganan (Rincian Output)" cellRendererFramework={PreCell} width={500}></AgGridColumn>
                         <AgGridColumn headerName={filter.periode === "0" ? "Data SAPSK" : "Data Awal"}>
                             <AgGridColumn field="SATUAN" headerName="Satuan"></AgGridColumn>
