@@ -24,7 +24,7 @@ const routes = [
   { path: '/user/manage', name: 'User Management', component: UserManagement },
   { path: '/user/approval-hierarchy', name: 'Approval Hierarchy', component: ApprovalHierarchy },
   { path: '/report/executive', name: 'Executive Summary', component: ExecutiveSummary }, 
-  { path: '/pok/delete', name: 'Pok Delete', component: PokDelete },
+  { path: '/pok/delete', name: 'Delete Data Awal POK', component: PokDelete },
 ];
 
 export default routes;

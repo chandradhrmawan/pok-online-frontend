@@ -48,7 +48,7 @@ const PokDelete = () => {
             <CCol>
                 <CCard>
                     <CCardHeader>
-                        Delte Data POK
+                        Delete Data Awal POK
                     </CCardHeader>
                     <CCardBody>
                         <CForm className="form-horizontal">
