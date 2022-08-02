@@ -10,6 +10,7 @@ const Profile = React.lazy(() => import('./views/user/Profile'));
 const UserManagement = React.lazy(() => import('./views/user/UserManagement'));
 const ApprovalHierarchy = React.lazy(() => import('./views/user/ApprovalHierarchy'));
 const ExecutiveSummary = React.lazy(() => import('./views/report/ExecutiveSummary'));
+const PokDelete = React.lazy(() => import('./views/pok/PokDelete'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -22,7 +23,8 @@ const routes = [
   { path: '/user/profile', name: 'Profile', component: Profile },
   { path: '/user/manage', name: 'User Management', component: UserManagement },
   { path: '/user/approval-hierarchy', name: 'Approval Hierarchy', component: ApprovalHierarchy },
-  { path: '/report/executive', name: 'Executive Summary', component: ExecutiveSummary },
+  { path: '/report/executive', name: 'Executive Summary', component: ExecutiveSummary }, 
+  { path: '/pok/delete', name: 'Pok Delete', component: PokDelete },
 ];
 
 export default routes;
