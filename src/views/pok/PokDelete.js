@@ -15,7 +15,6 @@ import {
     CModalTitle,
     CRow
 } from "@coreui/react";
-import JSZip from "jszip";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { SelectSatker } from "src/reusable";
@@ -27,7 +26,6 @@ const PokDelete = () => {
     const [info, setInfo] = useState({});
     const [error, setError] = useState();
     const [confirm, setConfirm] = useState(false);
-    const [zip, setZip] = useState(null);
     const [bussy, setBussy] = useState(false);
 
     const doDelete = () => {
