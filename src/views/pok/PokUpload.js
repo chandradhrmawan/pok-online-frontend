@@ -8,7 +8,7 @@ import SecurityContext from "src/SecurityContext";
 
 const PokUpload = () => {
     const history = useHistory();
-    const {post} = useContext(SecurityContext);
+    const { post, get } = useContext(SecurityContext);
     const [info, setInfo] = useState({});
     const [error, setError] = useState();
     const [zipContent, setZipContent] = useState([]);
@@ -44,10 +44,13 @@ const PokUpload = () => {
         data.append("periode", 0);
         data.append("mode", "NEW");
         data.append("dbfile", zip);
-        
+
         post("/api/pok/create", data).then(r => {
-            setConfirm(false);
-            history.push("/pok/details/" + r.data.revisionId);
+            let revId = r.data.revisionId
+            get(`/api/pok/generate-rk?id=${revId}`).then(resp => {
+                setConfirm(false);
+                history.push("/pok/details/" + revId);
+            })
         }).catch(e => {
             setError(e.response.data.message);
         }).finally(() => setBussy(false));
@@ -92,7 +95,7 @@ const PokUpload = () => {
                                 </CCol>
                                 <CCol xs="11" md="3">
                                     <label className="btn btn-warning">
-                                        <input type="file" style={{display: "none"}} accept=".zip" onChange={fileSelected}></input>
+                                        <input type="file" style={{ display: "none" }} accept=".zip" onChange={fileSelected}></input>
                                         <CIcon name="cil-folder" size="sm" /> Browse
                                     </label>
                                 </CCol>
@@ -109,7 +112,7 @@ const PokUpload = () => {
                         Database Info
                     </CCardHeader>
                     <CCardBody>
-                        <CDataTable                        
+                        <CDataTable
                             size="sm"
                             items={zipContent}
                             hover
