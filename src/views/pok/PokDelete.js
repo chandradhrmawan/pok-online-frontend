@@ -19,6 +19,7 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { SelectSatker } from "src/reusable";
 import SecurityContext from "src/SecurityContext";
+import { InputSelect } from "src/components"
 
 const PokDelete = () => {
     const history = useHistory();
@@ -27,12 +28,24 @@ const PokDelete = () => {
     const [error, setError] = useState();
     const [confirm, setConfirm] = useState(false);
     const [bussy, setBussy] = useState(false);
+    const [status, setStatus] = useState([
+        {
+            label: 'SEMUA',
+            value: '-'
+        },
+        {
+            label: 'AWAL - 0',
+            value: '0'
+        }
+    ])
+    const [selectedStatus, setSelectedStatus] = useState({});
 
     const doDelete = () => {
         setError(null);
         setBussy(true);
         const data = new FormData();
         data.append("kdsatker", info.satker.value);
+        data.append("status", selectedStatus.value);
 
         post("/api/pok/delete", data).then(r => {
             setConfirm(false);
@@ -40,6 +53,15 @@ const PokDelete = () => {
             setError(e.response.data.message);
         }).finally(() => setBussy(false));
     }
+
+    const handleSelectSatker = (e) => {
+        setInfo({ ...info, satker: e })
+    }
+
+    const handleSelectStatus = (e) => {
+        setSelectedStatus(e)
+    }
+
 
     return <>
         <CRow>
@@ -55,7 +77,21 @@ const PokDelete = () => {
                                     <CLabel>Satker</CLabel>
                                 </CCol>
                                 <CCol xs="10" md="5">
-                                    <SelectSatker onSelect={o => setInfo({ ...info, satker: o })} value={info.satker} selectFirst />
+                                    <SelectSatker onSelect={(e) => handleSelectSatker(e)} value={info.satker} selectFirst />
+                                </CCol>
+                            </CFormGroup>
+
+                            <CFormGroup row>
+                                <CCol md="1">
+                                    <CLabel>Status</CLabel>
+                                </CCol>
+                                <CCol xs="10" md="5">
+                                    <InputSelect
+                                        options={status}
+                                        onSelect={(e) => handleSelectStatus(e)}
+                                        value={selectedStatus}
+                                        selectFirst
+                                    />
                                 </CCol>
                                 <CCol xs="10" md="5">
                                     <CButton color="danger" size="md" onClick={() => { setConfirm(true); setError(null); }}>Delete</CButton>
