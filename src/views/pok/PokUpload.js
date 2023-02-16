@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { SelectBudgetYear, SelectLocation, SelectSatker } from "src/reusable";
 import SecurityContext from "src/SecurityContext";
+import { InputSelect } from "src/components"
 
 const PokUpload = () => {
     const history = useHistory();
@@ -15,6 +16,7 @@ const PokUpload = () => {
     const [confirm, setConfirm] = useState(false);
     const [zip, setZip] = useState(null);
     const [bussy, setBussy] = useState(false);
+    const [selectedOption, setSelectedOption] = useState({});
 
     const fileSelected = (e) => {
         if (e.target.files) {
@@ -41,7 +43,7 @@ const PokUpload = () => {
         data.append("kdsatker", info.satker.value);
         data.append("kdlokasi", info.lokasi.value);
         data.append("thang", info.budgetYear.value);
-        data.append("periode", 0);
+        data.append("periode", selectedOption.value);
         data.append("mode", "NEW");
         data.append("dbfile", zip);
 
@@ -54,6 +56,16 @@ const PokUpload = () => {
         }).catch(e => {
             setError(e.response.data.message);
         }).finally(() => setBussy(false));
+    }
+
+    const options = [
+        { value: '0', label: '0' },
+        { value: '1', label: '1' },
+        { value: '2', label: '2' }
+    ]
+
+    const handleChange = (e) => {
+        setSelectedOption(e)
     }
 
     return <>
@@ -98,6 +110,18 @@ const PokUpload = () => {
                                         <input type="file" style={{ display: "none" }} accept=".zip" onChange={fileSelected}></input>
                                         <CIcon name="cil-folder" size="sm" /> Browse
                                     </label>
+                                </CCol>
+                            </CFormGroup>
+                            <CFormGroup row>
+                                <CCol md="1">
+                                    <CLabel>Periode</CLabel>
+                                </CCol>
+                                <CCol xs="11" md="3">
+                                    <InputSelect
+                                        onSelect={e => handleChange(e)}
+                                        options={options}
+                                        placeholder="Select Satker"
+                                    />
                                 </CCol>
                             </CFormGroup>
                         </CForm>
