@@ -28,6 +28,7 @@ const PokDelete = () => {
     const [error, setError] = useState();
     const [confirm, setConfirm] = useState(false);
     const [bussy, setBussy] = useState(false);
+    const [alertSuccess, setSuccessAlert] = useState(false);
     const [status, setStatus] = useState([
         {
             label: 'SEMUA',
@@ -57,6 +58,7 @@ const PokDelete = () => {
 
         post("/api/pok/delete", data).then(r => {
             setConfirm(false);
+            setSuccessAlert(true);
         }).catch(e => {
             setError(e.response.data.message);
         }).finally(() => setBussy(false));
@@ -107,6 +109,10 @@ const PokDelete = () => {
                             </CFormGroup>
 
                         </CForm>
+
+                        <CCardBody>
+                        <CAlert color="success" show={alertSuccess}>Delete POK successfully</CAlert>
+                    </CCardBody>
                     </CCardBody>
                 </CCard>
             </CCol>

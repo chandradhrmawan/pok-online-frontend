@@ -120,7 +120,7 @@ const PokUpload = () => {
                                     <InputSelect
                                         onSelect={e => handleChange(e)}
                                         options={options}
-                                        placeholder="Select Satker"
+                                        placeholder="Select Periode"
                                     />
                                 </CCol>
                             </CFormGroup>
