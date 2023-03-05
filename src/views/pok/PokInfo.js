@@ -347,7 +347,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                         "action",
                                     ]}
                                     scopedSlots={{
-                                        'status': item => <td>{item.status.longName}</td>,
+                                        'status': item => <td>{item.status}</td>,
                                         'action': item => {
                                             if (isAuthorized) {
                                                 if (!item.ready) {
