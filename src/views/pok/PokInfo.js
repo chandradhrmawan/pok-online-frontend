@@ -249,9 +249,9 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                     {revision.actionable.includes('SUBMIT_APPROVAL') && <CDropdownItem onClick={e => showConfirm('SUBMIT_APPROVAL')}>Submit for Approval</CDropdownItem>}
                                     {revision.actionable.includes('REQUEST_CORRECTION') && <CDropdownItem onClick={e => showConfirm('REQUEST_CORRECTION')}>Request for Correction</CDropdownItem>}
                                     {revision.actionable.includes('APPROVE') && <CDropdownItem onClick={e => showConfirm('APPROVE')}>Approve</CDropdownItem>}
-                                    {revision.actionable.includes('REPLACE_DATA') && <CDropdownItem onClick={e => showRevisionDialog('REPLACE')}>Replace Data</CDropdownItem>}
+                                    {/* {revision.actionable.includes('REPLACE_DATA') && <CDropdownItem onClick={e => showRevisionDialog('REPLACE')}>Replace Data</CDropdownItem>}
                                     {revision.actionable.includes('CREATE_REVISION') && <CDropdownItem onClick={e => showRevisionDialog('NEW')}>Create Revision</CDropdownItem>}
-                                    {revision.actionable.includes('CREATE_DS_REVISION') && <CDropdownItem onClick={e => showRevisionDialog('APPEND')}>Create POK Revision</CDropdownItem>}
+                                    {revision.actionable.includes('CREATE_DS_REVISION') && <CDropdownItem onClick={e => showRevisionDialog('APPEND')}>Create POK Revision</CDropdownItem>} */}
                                 </CDropdownMenu>
                             </CDropdown>
                         </div>
