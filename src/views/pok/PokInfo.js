@@ -26,7 +26,8 @@ import {
     CNavLink,
     CTabPane,
     CTabContent,
-    CInputFile
+    CInputFile,
+    CInput
 } from "@coreui/react";
 import JSZip from "jszip";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -68,12 +69,63 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
     const [duplicateKoordinats, setDuplicateKoordinats] = useState([]);
     const [histories, setHistories] = useState([]);
     const [isAuthorized, setIsAuthorized] = useState(false);
-    const [documents, setDocuments] =  useState(null);
+    const [documents, setDocuments] = useState(null);
     const [documentList, setDocumentList] = useState([]);
 
     const [error, setError] = useState();
     const [bussy, setBussy] = useState(false);
     const fileUpload = useRef(null);
+
+    const [lembarKontrol, setLembarKontrol] = useState(null);
+    const [rencanaKerja, setRencanaKerja] = useState(null);
+    const [strukturKegiatan, setStrukturKegiatan] = useState(null);
+    const [lingkupKegiatan, setLingkupKegiatan] = useState(null);
+    const [rincianKegiatan, setRincianKegiatan] = useState(null);
+    const [koordinatKegiatan, setKoordinatKegiatan] = useState(null);
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    const handlePdfChange = (event, setter) => {
+        const file = event.target.files[0];
+        setter(file);
+    };
+
+    const handleSave = () => {
+        const data = new FormData();
+        data.append("revisionUid", lembarKontrol);
+        data.append("lembarKontrol", lembarKontrol);
+        data.append("rencanaKerja", rencanaKerja);
+        data.append("strukturKegiatan", strukturKegiatan);
+        data.append("lingkupKegiatan", lingkupKegiatan);
+        data.append("rincianKegiatan", rincianKegiatan);
+        data.append("koordinatKegiatan", koordinatKegiatan);
+
+        // store data ke API
+        fetch("pok/upload/file", {
+            method: "POST",
+            body: data,
+        }).then((response) => {
+            console.log(response);
+        });
+    };
+
+    useEffect(() => {
+        setIsFormValid(
+            lembarKontrol &&
+            rencanaKerja &&
+            strukturKegiatan &&
+            lingkupKegiatan &&
+            rincianKegiatan &&
+            koordinatKegiatan
+        );
+    }, [
+        lembarKontrol,
+        rencanaKerja,
+        strukturKegiatan,
+        lingkupKegiatan,
+        rincianKegiatan,
+        koordinatKegiatan,
+    ]);
+
 
     const fileSelected = (e) => {
         if (e.target.files) {
@@ -191,10 +243,10 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
 
     const handleTabChanged = (tabName) => {
         switch (tabName) {
-            case "HISTORY" : get(`/api/pok/history?revisionId=${uid}`).then(response => setHistories(response.data)); break;
-            case "KOORDINAT" : get(`/api/pok/koordinat?revisionId=${uid}`).then(response => setKoordinats(response.data)); break;
-            case "DUPLICATE" : get(`/api/pok/koordinat-duplicate?revisionId=${uid}`).then(response => setDuplicateKoordinats(response.data));break;
-            case "DOCUMENTS" : get(`/api/pok/documents?revisionId=${uid}`).then(response => setDocumentList(response.data)); break;
+            case "HISTORY": get(`/api/pok/history?revisionId=${uid}`).then(response => setHistories(response.data)); break;
+            case "KOORDINAT": get(`/api/pok/koordinat?revisionId=${uid}`).then(response => setKoordinats(response.data)); break;
+            case "DUPLICATE": get(`/api/pok/koordinat-duplicate?revisionId=${uid}`).then(response => setDuplicateKoordinats(response.data)); break;
+            case "DOCUMENTS": get(`/api/pok/documents?revisionId=${uid}`).then(response => setDocumentList(response.data)); break;
             default: console.log("Unknown Tab");
         }
     }
@@ -280,6 +332,9 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                         <CNavItem>
                             <CNavLink data-tab="DOCUMENTS">Documents</CNavLink>
                         </CNavItem>
+                        <CNavItem>
+                            <CNavLink data-tab="UPLOAD_PDF">Upload Laporan</CNavLink>
+                        </CNavItem>
                     </CNav>
                     {revision.id &&
                         <CTabContent>
@@ -329,7 +384,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                 </div>
                             </CTabPane>
                             <CTabPane data-tab="HISTORY">
-                                <CDataTable items={histories} fields={[{key: "budgetYear", label: "TA"}, "semester", "statusName"]} />
+                                <CDataTable items={histories} fields={[{ key: "budgetYear", label: "TA" }, "semester", "statusName"]} />
                             </CTabPane>
                             <CTabPane data-tab="KOORDINAT">
                                 <CDataTable
@@ -337,7 +392,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                     fields={[
                                         "uploadDate",
                                         "kdsatker",
-                                        { key: "thang", label: "TA"},
+                                        { key: "thang", label: "TA" },
                                         { key: "dsStatus", label: "POK Status" },
                                         "uploadedStatus",
                                         "approvedBalaiDate",
@@ -396,6 +451,54 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                         "action": item => <td><CButton variant="outline" color="success" size="sm" onClick={() => window.open(`/api/pok/download-document?t=${session.access}&id=${item.uid}`, '_blank')}>Download</CButton></td>
                                     }}
                                 />
+                            </CTabPane>
+                            <CTabPane data-tab="UPLOAD_PDF">
+                                <div className="mt-4">
+                                    <dl className="row">
+                                        <dt className="col-sm-3">1. Lembar Kontrol (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="lembar_kontrol" id="lembar_kontrol"
+                                                onChange={(event) => handlePdfChange(event, setLembarKontrol)} />
+                                        </dd>
+
+                                        <dt className="col-sm-3">2. Rencana Kerja (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="rencana_kerja" id="rencana_kerja"
+                                                onChange={(event) => handlePdfChange(event, setRencanaKerja)} />
+                                        </dd>
+
+                                        <dt className="col-sm-3">3. Struktur Kegiatan (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="struktur_kegiatan" id="struktur_kegiatan"
+                                                onChange={(event) => handlePdfChange(event, setStrukturKegiatan)} />
+                                        </dd>
+
+
+                                        <dt className="col-sm-3">4. Lingkup Kegiatan (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="lingkup_kegiatan" id="lingkup_kegiatan"
+                                                onChange={(event) => handlePdfChange(event, setLingkupKegiatan)} />
+                                        </dd>
+
+
+                                        <dt className="col-sm-3">5. Rincian Kegiatan (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="rincian_kegiatan" id="rincian_kegiatan"
+                                                onChange={(event) => handlePdfChange(event, setRincianKegiatan)} />
+                                        </dd>
+
+
+                                        <dt className="col-sm-3">6. Koordinat Lokasi(PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="koordinat_kegiatan" id="koordinat_kegiatan"
+                                                onChange={(event) => handlePdfChange(event, setKoordinatKegiatan)} />
+                                        </dd>
+
+                                        <dd className="col-sm-12">
+                                            <CButton color="primary" size="sm" align="left" onClick={handleSave} disabled={!isFormValid}>Save</CButton>
+                                        </dd>
+                                    </dl>
+                                </div>
                             </CTabPane>
                         </CTabContent>
                     }
@@ -457,7 +560,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                 {revision.id && revision.status === 'New' &&
                     <CFormGroup>
                         <CLabel>Reviewer :</CLabel>
-                        <InputSelect options={reviewers} value={reviewer} onSelect={handleChangeSelect}/>
+                        <InputSelect options={reviewers} value={reviewer} onSelect={handleChangeSelect} />
                     </CFormGroup>
                 }
                 {
@@ -472,7 +575,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                     <CAlert color="warning">Terdapat koordinat yang belum disetujui</CAlert>
                 }
                 {
-                    actionConfig.action !== 'SUBMIT_REVIEW' && duplicateKoordinats &&  duplicateKoordinats.length > 0 &&
+                    actionConfig.action !== 'SUBMIT_REVIEW' && duplicateKoordinats && duplicateKoordinats.length > 0 &&
                     <CAlert color="info">Terdapat double koordinat</CAlert>
                 }
                 {
