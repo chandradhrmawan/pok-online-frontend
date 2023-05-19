@@ -82,6 +82,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
     const [lingkupKegiatan, setLingkupKegiatan] = useState(null);
     const [rincianKegiatan, setRincianKegiatan] = useState(null);
     const [koordinatKegiatan, setKoordinatKegiatan] = useState(null);
+    const [jadwalPelaksanaan, setJadwalPelaksanaan] = useState(null)
     const [isFormValid, setIsFormValid] = useState(false);
 
     const handlePdfChange = (event, setter) => {
@@ -98,6 +99,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
         data.append("lingkupKegiatan", lingkupKegiatan);
         data.append("rincianKegiatan", rincianKegiatan);
         data.append("koordinatKegiatan", koordinatKegiatan);
+        data.append("jadwalPelaksanaan", jadwalPelaksanaan);
 
         // store data ke API
         fetch("pok/upload/file", {
@@ -115,7 +117,8 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
             strukturKegiatan &&
             lingkupKegiatan &&
             rincianKegiatan &&
-            koordinatKegiatan
+            koordinatKegiatan &&
+            jadwalPelaksanaan
         );
     }, [
         lembarKontrol,
@@ -124,6 +127,7 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
         lingkupKegiatan,
         rincianKegiatan,
         koordinatKegiatan,
+        jadwalPelaksanaan
     ]);
 
 
@@ -474,24 +478,30 @@ const PokInfo = ({ uid, onLoaded, onActionCompleted }) => {
                                         </dd>
 
 
-                                        <dt className="col-sm-3">4. Lingkup Kegiatan (PDF)</dt>
+                                        <dt className="col-sm-3">4. Rekap Struktur (PDF)</dt>
                                         <dd className="col-sm-9">
                                             <CInput size="sm" type="file" accept="pdf/*" name="lingkup_kegiatan" id="lingkup_kegiatan"
                                                 onChange={(event) => handlePdfChange(event, setLingkupKegiatan)} />
                                         </dd>
 
 
-                                        <dt className="col-sm-3">5. Rincian Kegiatan (PDF)</dt>
+                                        <dt className="col-sm-3">5. Linggup Kegiatan (PDF)</dt>
                                         <dd className="col-sm-9">
                                             <CInput size="sm" type="file" accept="pdf/*" name="rincian_kegiatan" id="rincian_kegiatan"
                                                 onChange={(event) => handlePdfChange(event, setRincianKegiatan)} />
                                         </dd>
 
 
-                                        <dt className="col-sm-3">6. Koordinat Lokasi(PDF)</dt>
+                                        <dt className="col-sm-3">6. Rincian Kegiatan (PDF)</dt>
                                         <dd className="col-sm-9">
                                             <CInput size="sm" type="file" accept="pdf/*" name="koordinat_kegiatan" id="koordinat_kegiatan"
                                                 onChange={(event) => handlePdfChange(event, setKoordinatKegiatan)} />
+                                        </dd>
+
+                                        <dt className="col-sm-3">7. Jadwal Pelaksanaan (PDF)</dt>
+                                        <dd className="col-sm-9">
+                                            <CInput size="sm" type="file" accept="pdf/*" name="jadwal_pelaksanaan" id="jadwal_pelaksanaan"
+                                                onChange={(event) => handlePdfChange(event, setJadwalPelaksanaan)} />
                                         </dd>
 
                                         <dd className="col-sm-12">
