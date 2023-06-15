@@ -17,7 +17,7 @@ import {
 } from "@coreui/react";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { SelectSatker } from "src/reusable";
+import { SelectSatker, SelectBudgetYear } from "src/reusable";
 import SecurityContext from "src/SecurityContext";
 import { InputSelect } from "src/components"
 
@@ -55,6 +55,7 @@ const PokDelete = () => {
         const data = new FormData();
         data.append("kdsatker", info.satker.value);
         data.append("status", selectedStatus.value);
+        data.append("thang",info.budgetYear.value);
 
         post("/api/pok/delete", data).then(r => {
             setConfirm(false);
@@ -103,6 +104,22 @@ const PokDelete = () => {
                                         selectFirst
                                     />
                                 </CCol>
+                            </CFormGroup>
+
+                            <CFormGroup row>
+                                <CCol md="1">
+                                    <CLabel>Tahun</CLabel>
+                                </CCol>
+                                <CCol xs="10" md="5">
+                                    <SelectBudgetYear
+                                        onSelect={o => setInfo({ ...info, budgetYear: o })}
+                                        value={info.budgetYear}
+                                        selectFirst
+                                    />
+                                </CCol>
+                            </CFormGroup>
+
+                            <CFormGroup row>
                                 <CCol xs="10" md="5">
                                     <CButton color="danger" size="md" onClick={() => { setConfirm(true); setError(null); }}>Delete</CButton>
                                 </CCol>
@@ -111,8 +128,8 @@ const PokDelete = () => {
                         </CForm>
 
                         <CCardBody>
-                        <CAlert color="success" show={alertSuccess}>Delete POK successfully</CAlert>
-                    </CCardBody>
+                            <CAlert color="success" show={alertSuccess}>Delete POK successfully</CAlert>
+                        </CCardBody>
                     </CCardBody>
                 </CCard>
             </CCol>
